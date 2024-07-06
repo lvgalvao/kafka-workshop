@@ -25,14 +25,11 @@ Neste workshop prático, vamos desenvolver um sistema completo de monitoramento 
 ### Estrutura do Projeto
 
 1. **Kafka Cluster**:
-    
     * Zookeeper para coordenação.
     * Múltiplos brokers para armazenamento e gerenciamento de dados.
 2. **Producers**:
-    
     * Geram e enviam transações financeiras simuladas para um tópico Kafka.
 3. **Consumers**:
-    
     * Consomem e processam as transações do tópico Kafka.
 
 ### Arquitetura do Projeto
@@ -70,20 +67,17 @@ graph LR
     Broker3 --> |"Consume Messages"| Consumer3
 ```
 
-### Explicação do Diagrama:
+### Explicação do Diagrama
 
 1. **Producers**:
-    
     * **Producer 1 e Producer 2**: Aplicações cliente que enviam mensagens para os brokers do cluster Kafka.
 2. **Kafka Cluster**:
-    
     * **Zookeeper**: Coordena e gerencia o estado do cluster Kafka, colocado acima dos brokers.
     * **Brokers (Broker 1, Broker 2, Broker 3)**: Servidores Kafka que armazenam e gerenciam os dados. Eles recebem mensagens dos producers e as encaminham para os consumers.
 3. **Consumers**:
-    
     * **Consumer 1, Consumer 2, Consumer 3**: Aplicações cliente que consomem mensagens dos brokers.
 
-### Fluxo de Dados:
+### Fluxo de Dados
 
 * **Producers** enviam mensagens para os **Brokers**.
 * **Brokers** armazenam as mensagens e se comunicam com o **Zookeeper** para coordenação.
@@ -95,6 +89,6 @@ Este diagrama organizado da esquerda para a direita e com o Zookeeper acima dos 
 
 Para conhecer mais sobre a Escola Jornada de Dados e explorar outros cursos e workshops, visite o site:
 
-https://suajornadadedados.com.br/
+[https://suajornadadedados.com.br/](https://suajornadadedados.com.br/)
 
 Estamos ansiosos para vê-lo no workshop!
