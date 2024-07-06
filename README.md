@@ -221,34 +221,6 @@ graph TD
 6. **Fim**:
    - O processo termina.
 
-### Diagrama Completo
-
-```mermaid
-graph TD
-    A[Início] --> B[Configurar Variáveis de Ambiente]
-    B --> C{Configurar Produtor}
-    C --> |Produtor Configurado| D[Gerar Mensagem de Transação]
-    C --> |Erro na Configuração| E[Aguardar Brokers Disponíveis]
-    E --> C
-    D --> F[Enviar Mensagem para o Kafka]
-    F --> G[Imprimir Log de Mensagem Enviada]
-    G --> H{Continuar Produzindo?}
-    H --> |Sim| D
-    H --> |Não| I[Fechar Produtor]
-    I --> J[Fim]
-
-    subgraph "Loop de Produção"
-        D --> F
-        F --> G
-        G --> H
-    end
-
-    style A fill:#f9f,stroke:#333,stroke-width:4px;
-    style J fill:#f9f,stroke:#333,stroke-width:4px;
-```
-
-Este diagrama ajuda a visualizar o fluxo de execução do script `produce.py`, desde a configuração do produtor Kafka até o envio contínuo de mensagens de transações simuladas e o eventual fechamento do produtor.
-
 #### Consume
 
 ```mermaid
@@ -299,31 +271,3 @@ graph TD
 6. **Fim**:
     
     * O processo termina.
-
-### Diagrama Completo
-
-```mermaid
-graph TD
-    A[Início] --> B[Configurar Variáveis de Ambiente]
-    B --> C{Configurar Consumidor}
-    C --> |Consumidor Configurado| D[Consumir Mensagem do Kafka]
-    C --> |Erro na Configuração| E[Aguardar Brokers Disponíveis]
-    E --> C
-    D --> F[Processar Mensagem]
-    F --> G[Imprimir Log de Mensagem Consumida]
-    G --> H{Continuar Consumindo?}
-    H --> |Sim| D
-    H --> |Não| I[Fechar Consumidor]
-    I --> J[Fim]
-
-    subgraph "Loop de Consumo"
-        D --> F
-        F --> G
-        G --> H
-    end
-
-    style A fill:#f9f,stroke:#333,stroke-width:4px;
-    style J fill:#f9f,stroke:#333,stroke-width:4px;
-```
-
-Este diagrama ajuda a visualizar o fluxo de execução do script `consume.py`, desde a configuração do consumidor Kafka até o consumo contínuo de mensagens e o eventual fechamento do consumidor.
