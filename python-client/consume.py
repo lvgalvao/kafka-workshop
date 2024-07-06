@@ -9,11 +9,11 @@ TOPIC = os.environ.get('TOPIC', 'foobar')
 CONSUMER_GROUP = os.environ.get('CONSUMER_GROUP', 'cg-group-id')
 BOOTSTRAP_SERVERS = os.environ.get('BOOTSTRAP_SERVERS', 'localhost:9091,localhost:9092,localhost:9093').split(',')
 
-print('start')
+print('iniciando')
 
-def setup_consumer():
+def configurar_consumidor():
     try:
-        consumer = KafkaConsumer(
+        consumidor = KafkaConsumer(
             TOPIC,
             bootstrap_servers = BOOTSTRAP_SERVERS,
             auto_offset_reset = 'latest', # 'earliest' # https://stackoverflow.com/a/64829426 | https://github.com/confluentinc/confluent-kafka-python/issues/137
@@ -21,37 +21,37 @@ def setup_consumer():
             group_id = CONSUMER_GROUP,
             value_deserializer = lambda x : json.loads(x.decode('utf-8'))
         )
-        return consumer
+        return consumidor
     
     except Exception as e:
         if e == 'NoBrokersAvailable':
-            print('waiting for brokers to become available')
-        return 'not-ready'
+            print('aguardando os brokers ficarem disponíveis')
+        return 'nao-disponivel'
     
-def time_delta(received_time):
-    now = datetime.now().strftime("%s")
-    return int(now) - received_time
+def diferenca_tempo(received_time):
+    agora = datetime.now().strftime("%s")
+    return int(agora) - received_time
 
-print('starting consumer, checks if brokers are availabe')
-consumer='not-ready'
+print('iniciando consumidor, verificando se os brokers estão disponíveis')
+consumidor = 'nao-disponivel'
 
-while consumer == 'not-ready':
-    print('brokers not availbe yet')
+while consumidor == 'nao-disponivel':
+    print('brokers ainda não disponíveis')
     time.sleep(5)
-    consumer = setup_consumer()
+    consumidor = configurar_consumidor()
 
-print('brokers are available and ready to consume messages')
+print('brokers estão disponíveis e prontos para consumir mensagens')
 
-for message in consumer:
+for mensagem in consumidor:
     try:
-        print(message.value)
-        #print(f"Received message at: {message.timestamp}")
-        #now = datetime.now().strftime("%s")
-        #print(f"Current timestamp {now}")
+        print(mensagem.value)
+        #print(f"Mensagem recebida em: {mensagem.timestamp}")
+        #agora = datetime.now().strftime("%s")
+        #print(f"Timestamp atual {agora}")
     except Exception as e:
-        print('exception ocurred in consumption')
+        print('ocorreu uma exceção no consumo')
         print(e)
 
-# Close the consumer
-print('closing consumer')
-consumer.close()
+# Fechar o consumidor
+print('fechando consumidor')
+consumidor.close()
