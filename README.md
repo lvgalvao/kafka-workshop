@@ -168,3 +168,162 @@ Com essa configuração, você terá um ambiente completo de Apache Kafka em exe
 ### Resumo
 
 Este guia rápido permite que você inicialize todos os componentes necessários do projeto (Zookeeper, Kafka Brokers, Kafka UI, Producer e Consumer) usando Docker. O Kafka UI oferece uma interface gráfica para monitorar e gerenciar os tópicos e mensagens do Kafka, enquanto os logs do Producer e Consumer permitem verificar se as mensagens estão sendo produzidas e consumidas corretamente.
+
+#### Produce
+
+### Esquemático do Arquivo `produce.py`
+
+```mermaid
+graph TD
+    A[Início] --> B[Configurar Variáveis de Ambiente]
+    B --> C{Configurar Produtor}
+    C --> |Produtor Configurado| D[Gerar Mensagem de Transação]
+    C --> |Erro na Configuração| E[Aguardar Brokers Disponíveis]
+    E --> C
+    D --> F[Enviar Mensagem para o Kafka]
+    F --> G[Imprimir Log de Mensagem Enviada]
+    G --> H{Continuar Produzindo?}
+    H --> |Sim| D
+    H --> |Não| I[Fechar Produtor]
+    I --> J[Fim]
+
+    subgraph "Loop de Produção"
+        D --> F
+        F --> G
+        G --> H
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:4px;
+    style J fill:#f9f,stroke:#333,stroke-width:4px;
+```
+
+### Explicação do Esquemático
+
+1. **Início**:
+   - O processo inicia.
+
+2. **Configurar Variáveis de Ambiente**:
+   - As variáveis de ambiente são configuradas (`TOPIC` e `BOOTSTRAP_SERVERS`).
+
+3. **Configurar Produtor**:
+   - O produtor Kafka é configurado para se conectar aos servidores bootstrap especificados.
+   - Se a configuração falhar (por exemplo, se os brokers não estiverem disponíveis), o sistema aguarda um tempo e tenta novamente.
+
+4. **Loop de Produção**:
+   - **Gerar Mensagem de Transação**: Uma mensagem de transação é gerada utilizando dados simulados da biblioteca `Faker`.
+   - **Enviar Mensagem para o Kafka**: A mensagem gerada é enviada para o tópico Kafka especificado.
+   - **Imprimir Log de Mensagem Enviada**: Um log é impresso indicando que a mensagem foi enviada com sucesso.
+   - **Continuar Produzindo?**: O sistema verifica se deve continuar produzindo mensagens. Se sim, o loop continua gerando e enviando mensagens. Caso contrário, o produtor é fechado.
+
+5. **Fechar Produtor**:
+   - O produtor Kafka é fechado adequadamente.
+
+6. **Fim**:
+   - O processo termina.
+
+### Diagrama Completo
+
+```mermaid
+graph TD
+    A[Início] --> B[Configurar Variáveis de Ambiente]
+    B --> C{Configurar Produtor}
+    C --> |Produtor Configurado| D[Gerar Mensagem de Transação]
+    C --> |Erro na Configuração| E[Aguardar Brokers Disponíveis]
+    E --> C
+    D --> F[Enviar Mensagem para o Kafka]
+    F --> G[Imprimir Log de Mensagem Enviada]
+    G --> H{Continuar Produzindo?}
+    H --> |Sim| D
+    H --> |Não| I[Fechar Produtor]
+    I --> J[Fim]
+
+    subgraph "Loop de Produção"
+        D --> F
+        F --> G
+        G --> H
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:4px;
+    style J fill:#f9f,stroke:#333,stroke-width:4px;
+```
+
+Este diagrama ajuda a visualizar o fluxo de execução do script `produce.py`, desde a configuração do produtor Kafka até o envio contínuo de mensagens de transações simuladas e o eventual fechamento do produtor.
+
+#### Consume
+
+```mermaid
+graph TD
+    A[Início] --> B[Configurar Variáveis de Ambiente]
+    B --> C{Configurar Consumidor}
+    C --> |Consumidor Configurado| D[Consumir Mensagem do Kafka]
+    C --> |Erro na Configuração| E[Aguardar Brokers Disponíveis]
+    E --> C
+    D --> F[Processar Mensagem]
+    F --> G[Imprimir Log de Mensagem Consumida]
+    G --> H{Continuar Consumindo?}
+    H --> |Sim| D
+    H --> |Não| I[Fechar Consumidor]
+    I --> J[Fim]
+
+    subgraph "Loop de Consumo"
+        D --> F
+        F --> G
+        G --> H
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:4px;
+    style J fill:#f9f,stroke:#333,stroke-width:4px;
+```
+
+### Explicação do Esquemático
+
+1. **Início**:
+    
+    * O processo inicia.
+2. **Configurar Variáveis de Ambiente**:
+    
+    * As variáveis de ambiente são configuradas (`TOPIC`, `CONSUMER_GROUP` e `BOOTSTRAP_SERVERS`).
+3. **Configurar Consumidor**:
+    
+    * O consumidor Kafka é configurado para se conectar aos servidores bootstrap especificados.
+    * Se a configuração falhar (por exemplo, se os brokers não estiverem disponíveis), o sistema aguarda um tempo e tenta novamente.
+4. **Loop de Consumo**:
+    
+    * **Consumir Mensagem do Kafka**: O consumidor busca uma mensagem no tópico Kafka especificado.
+    * **Processar Mensagem**: A mensagem consumida é processada.
+    * **Imprimir Log de Mensagem Consumida**: Um log é impresso indicando que a mensagem foi consumida com sucesso.
+    * **Continuar Consumindo?**: O sistema verifica se deve continuar consumindo mensagens. Se sim, o loop continua consumindo e processando mensagens. Caso contrário, o consumidor é fechado.
+5. **Fechar Consumidor**:
+    
+    * O consumidor Kafka é fechado adequadamente.
+6. **Fim**:
+    
+    * O processo termina.
+
+### Diagrama Completo
+
+```mermaid
+graph TD
+    A[Início] --> B[Configurar Variáveis de Ambiente]
+    B --> C{Configurar Consumidor}
+    C --> |Consumidor Configurado| D[Consumir Mensagem do Kafka]
+    C --> |Erro na Configuração| E[Aguardar Brokers Disponíveis]
+    E --> C
+    D --> F[Processar Mensagem]
+    F --> G[Imprimir Log de Mensagem Consumida]
+    G --> H{Continuar Consumindo?}
+    H --> |Sim| D
+    H --> |Não| I[Fechar Consumidor]
+    I --> J[Fim]
+
+    subgraph "Loop de Consumo"
+        D --> F
+        F --> G
+        G --> H
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:4px;
+    style J fill:#f9f,stroke:#333,stroke-width:4px;
+```
+
+Este diagrama ajuda a visualizar o fluxo de execução do script `consume.py`, desde a configuração do consumidor Kafka até o consumo contínuo de mensagens e o eventual fechamento do consumidor.
