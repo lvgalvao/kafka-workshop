@@ -32,6 +32,61 @@ Neste workshop prático, vamos desenvolver um sistema completo de monitoramento 
 3. **Consumers**:
     * Consomem e processam as transações do tópico Kafka.
 
+### Configuração do Projeto
+
+Siga os passos abaixo para configurar o ambiente de desenvolvimento para este projeto.
+
+#### Passo 1: Configurar a versão do Python
+
+Defina a versão local do Python para 3.12.1 usando pyenv:
+
+```sh
+pyenv local 3.12.1
+```
+
+#### Passo 2: Inicializar o Poetry
+
+Inicie o Poetry no projeto para gerenciar as dependências:
+
+```sh
+poetry init
+```
+
+Siga as instruções para configurar o `pyproject.toml`.
+
+#### Passo 3: Gerar um `.gitignore` para Python
+
+Utilize o `ignr` para criar um arquivo `.gitignore`:
+
+```sh
+ignr -n python
+```
+
+#### Passo 4: Instalar `ruff` como dependência de desenvolvimento
+
+Adicione o `ruff` para linting:
+
+```sh
+poetry add --group dev ruff
+```
+
+#### Passo 5: Instalar `taskipy` como dependência de desenvolvimento
+
+Adicione o `taskipy` para facilitar a execução de tarefas:
+
+```sh
+poetry add --group dev taskipy
+```
+
+#### Passo 6: Executar as tarefas de lint e format
+
+Utilize o `taskipy` para rodar as tarefas de lint e format:
+
+```sh
+task lint
+task format
+```
+
 ### Arquitetura do Projeto
 
 ```mermaid
