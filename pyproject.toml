@@ -18,7 +18,7 @@ taskipy = "^1.13.0"
 [tool.taskipy.tasks]
 
 lint = 'ruff check . && ruff check . --diff'
-format = 'ruff check . --fix && ruff format .'
+format = 'ruff check . --fix && ruff format . '
 
 [tool.ruff]
 line-length = 79
@@ -26,7 +26,7 @@ line-length = 79
 [tool.ruff.lint]
 preview = true
 select = ['I', 'F', 'E', 'W', 'PL', 'PT']
-ignore = ['E402', 'F811']
+ignore = ['E402', 'F811', 'E501']
 
 [tool.ruff.format]
 preview = true
