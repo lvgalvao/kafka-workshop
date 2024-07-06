@@ -13,87 +13,14 @@ Bem-vindo ao projeto de monitoramento de transações financeiras em tempo real 
 
 ### Descrição do Workshop
 
-Neste workshop prático, vamos desenvolver um sistema completo de monitoramento de transações financeiras em tempo real utilizando Apache Kafka e Python. Vamos explorar a arquitetura cliente-servidor do Kafka, configurar um cluster Kafka, e implementar producers e consumers para processar um grande volume de dados em tempo real.
-
-### Objetivos do Projeto
-
-1. **Configurar e entender a arquitetura do Apache Kafka.**
-2. **Implementar producers que geram e enviam mensagens para um tópico Kafka.**
-3. **Implementar consumers que consomem e processam mensagens de um tópico Kafka.**
-4. **Monitorar e analisar um fluxo de transações financeiras simuladas.**
-
-### Estrutura do Projeto
-
-1. **Kafka Cluster**:
-    * Zookeeper para coordenação.
-    * Múltiplos brokers para armazenamento e gerenciamento de dados.
-2. **Producers**:
-    * Geram e enviam transações financeiras simuladas para um tópico Kafka.
-3. **Consumers**:
-    * Consomem e processam as transações do tópico Kafka.
-
-### Configuração do Projeto
-
-Siga os passos abaixo para configurar o ambiente de desenvolvimento para este projeto.
-
-#### Passo 1: Configurar a versão do Python
-
-Defina a versão local do Python para 3.12.1 usando pyenv:
-
-```sh
-pyenv local 3.12.1
-```
-
-#### Passo 2: Inicializar o Poetry
-
-Inicie o Poetry no projeto para gerenciar as dependências:
-
-```sh
-poetry init
-```
-
-Siga as instruções para configurar o `pyproject.toml`.
-
-#### Passo 3: Gerar um `.gitignore` para Python
-
-Utilize o `ignr` para criar um arquivo `.gitignore`:
-
-```sh
-ignr -n python
-```
-
-#### Passo 4: Instalar `ruff` como dependência de desenvolvimento
-
-Adicione o `ruff` para linting:
-
-```sh
-poetry add --group dev ruff
-```
-
-#### Passo 5: Instalar `taskipy` como dependência de desenvolvimento
-
-Adicione o `taskipy` para facilitar a execução de tarefas:
-
-```sh
-poetry add --group dev taskipy
-```
-
-#### Passo 6: Executar as tarefas de lint e format
-
-Utilize o `taskipy` para rodar as tarefas de lint e format:
-
-```sh
-task lint
-task format
-```
+O projeto se foca no monitoramento de transações financeiras em tempo real usando Apache Kafka. Neste cenário, o Producer gera transações simuladas utilizando a biblioteca Faker e as envia para um tópico Kafka. O Consumer então consome essas mensagens para análise ou processamento adicional.
 
 ### Arquitetura do Projeto
 
 ```mermaid
 graph LR
-    subgraph Producers
-        Producer1["Producer 1"]
-        Producer2["Producer 2"]
+    subgraph Producer
+        Producer["Producer"]
     end
 
     subgraph Kafka Cluster
@@ -104,46 +31,145 @@ graph LR
         Broker3["Broker 3"]
     end
 
-    subgraph Consumers
-        Consumer1["Consumer 1"]
-        Consumer2["Consumer 2"]
-        Consumer3["Consumer 3"]
+    subgraph Consumer
+        Consumer["Consumer"]
     end
 
-    Producer1 --> |"Send Messages"| Broker1
-    Producer2 --> |"Send Messages"| Broker2
+    Producer --> |"Send Messages"| Broker1
+    Producer --> |"Send Messages"| Broker2
+    Producer --> |"Send Messages"| Broker3
 
     Zookeeper --> |"Cluster Coordination"| Broker1
     Zookeeper --> |"Cluster Coordination"| Broker2
     Zookeeper --> |"Cluster Coordination"| Broker3
 
-    Broker1 --> |"Consume Messages"| Consumer1
-    Broker2 --> |"Consume Messages"| Consumer2
-    Broker3 --> |"Consume Messages"| Consumer3
+    Broker1 --> |"Consume Messages"| Consumer
+    Broker2 --> |"Consume Messages"| Consumer
+    Broker3 --> |"Consume Messages"| Consumer
 ```
 
 ### Explicação do Diagrama
 
-1. **Producers**:
-    * **Producer 1 e Producer 2**: Aplicações cliente que enviam mensagens para os brokers do cluster Kafka.
+1. **Producer**:
+    * Gera e envia mensagens simuladas de transações financeiras para os brokers do cluster Kafka.
+
 2. **Kafka Cluster**:
     * **Zookeeper**: Coordena e gerencia o estado do cluster Kafka, colocado acima dos brokers.
-    * **Brokers (Broker 1, Broker 2, Broker 3)**: Servidores Kafka que armazenam e gerenciam os dados. Eles recebem mensagens dos producers e as encaminham para os consumers.
-3. **Consumers**:
-    * **Consumer 1, Consumer 2, Consumer 3**: Aplicações cliente que consomem mensagens dos brokers.
+    * **Brokers (Broker 1, Broker 2, Broker 3)**: Servidores Kafka que armazenam e gerenciam os dados. Eles recebem mensagens do producer e as encaminham para o consumer.
+
+3. **Consumer**:
+    * Consome e processa mensagens dos brokers do cluster Kafka.
 
 ### Fluxo de Dados
 
-* **Producers** enviam mensagens para os **Brokers**.
+* **Producer** envia mensagens para os **Brokers**.
 * **Brokers** armazenam as mensagens e se comunicam com o **Zookeeper** para coordenação.
-* **Consumers** consomem mensagens dos **Brokers**.
+* **Consumer** consome mensagens dos **Brokers**.
 
 Este diagrama organizado da esquerda para a direita e com o Zookeeper acima dos brokers dentro do Kafka Cluster ilustra claramente o fluxo de dados e a coordenação dentro do sistema.
 
-### Mais Informações
+### Explicação dos Arquivos e Arquitetura do Projeto
 
-Para conhecer mais sobre a Escola Jornada de Dados e explorar outros cursos e workshops, visite o site:
+#### Arquitetura do Projeto
 
-[https://suajornadadedados.com.br/](https://suajornadadedados.com.br/)
+O projeto é uma aplicação distribuída baseada em Apache Kafka, onde múltiplos componentes interagem para processar dados de transações financeiras em tempo real. A arquitetura do projeto consiste em:
 
-Estamos ansiosos para vê-lo no workshop!
+1. **Zookeeper**: Gerencia e coordena os brokers do Kafka.
+2. **Kafka Brokers**: Recebem, armazenam e distribuem mensagens (transações) entre produtores e consumidores.
+3. **Kafka UI**: Interface gráfica para gerenciar e monitorar os tópicos e mensagens do Kafka.
+4. **Producer**: Gera e envia mensagens simuladas (transações) para um tópico Kafka.
+5. **Consumer**: Consome e processa as mensagens das transações enviadas pelo Producer.
+
+#### Arquivos do Projeto
+
+1. **docker-compose.yml**:
+    - Define e configura todos os serviços necessários para a aplicação, incluindo Zookeeper, Kafka Brokers, Kafka UI, Producer e Consumer.
+    - Configura redes, variáveis de ambiente, portas, dependências e políticas de reinício para cada serviço.
+
+2. **Dockerfile**:
+    - Utilizado para construir as imagens Docker do Producer e Consumer.
+    - Especifica a base da imagem, instala dependências (`kafka-python` e `Faker`) e define o comando de inicialização.
+
+3. **produce.py**:
+    - Script Python para gerar e enviar mensagens simuladas de transações financeiras para o Kafka.
+    - Utiliza a biblioteca `Faker` para criar dados fictícios e `kafka-python` para enviar essas mensagens para o tópico Kafka especificado.
+
+4. **consume.py**:
+    - Script Python para consumir e processar mensagens das transações financeiras do Kafka.
+    - Utiliza `kafka-python` para se conectar ao Kafka e consumir mensagens do tópico especificado.
+
+5. **run.sh**:
+    - Script shell utilizado para iniciar o Producer ou Consumer baseado na variável de ambiente `ACTION`.
+    - Verifica a variável de ambiente e executa o script Python correspondente (`produce.py` ou `consume.py`).
+
+### O que Cada Docker Faz
+
+1. **Zookeeper**:
+    - Container que executa o Zookeeper, responsável por coordenar e gerenciar o estado dos brokers do Kafka.
+    - Configurado para reiniciar automaticamente, se necessário.
+
+2. **Kafka UI**:
+    - Container que executa a interface gráfica do Kafka UI para monitorar e gerenciar os tópicos e mensagens.
+    - Depende dos brokers Kafka e permite uma visualização fácil do estado do cluster Kafka.
+
+3. **broker-1**, **broker-2**, **broker-3**:
+    - Contêineres que executam os brokers do Kafka, responsáveis por armazenar e distribuir as mensagens entre produtores e consumidores.
+    - Configurados para reiniciar automaticamente e conectados ao Zookeeper para coordenação.
+    - Cada broker é identificado por um ID único e escuta em portas específicas.
+
+4. **Producer**:
+    - Container que executa o script `produce.py` para gerar e enviar mensagens simuladas de transações financeiras para o Kafka.
+    - Configurado para reiniciar automaticamente e depende dos brokers Kafka para garantir que as mensagens sejam enviadas corretamente.
+
+5. **Consumer**:
+    - Container que executa o script `consume.py` para consumir e processar mensagens de transações financeiras do Kafka.
+    - Configurado para reiniciar automaticamente e depende dos brokers Kafka e do Producer para garantir que as mensagens sejam consumidas corretamente.
+
+### Conclusão
+
+Para iniciar o projeto, siga os passos abaixo:
+
+1. **Construir e Iniciar os Contêineres**:
+    - Navegue até o diretório onde está localizado o arquivo `docker-compose.yml` e execute:
+      ```sh
+      docker-compose up --build
+      ```
+
+2. **Verificar a Interface do Kafka UI**:
+    - Acesse a interface do Kafka UI em [http://localhost:8087](http://localhost:8087) para visualizar e gerenciar os tópicos e mensagens.
+
+Com essa configuração, você terá um ambiente completo de Apache Kafka em execução com múltiplos brokers, um Zookeeper para coordenação, uma interface gráfica para gerenciamento e scripts Python para produção e consumo de mensagens de transações financeiras em tempo real.
+
+### Iniciar o Projeto
+
+#### Kafka in Docker
+
+### Quick Start
+
+1. **Inicializar a Stack**:
+
+   Para inicializar todos os serviços definidos no `docker-compose.yml`, execute o comando abaixo no diretório onde o arquivo está localizado:
+
+   ```sh
+   docker-compose up --build -d
+   ```
+
+2. **Verificar os Logs do Producer**:
+
+   Para acompanhar os logs do container do Producer e verificar se ele está enviando mensagens corretamente, execute o comando abaixo:
+
+   ```sh
+   docker logs -f producer
+   ```
+
+3. **Verificar os Logs do Consumer**:
+
+   Para acompanhar os logs do container do Consumer e verificar se ele está consumindo mensagens corretamente, execute o comando abaixo:
+
+   ```sh
+   docker logs -f consumer
+   ```
+
+### Resumo
+
+Este guia rápido permite que você inicialize todos os componentes necessários do projeto (Zookeeper, Kafka Brokers, Kafka UI, Producer e Consumer) usando Docker. O Kafka UI oferece uma interface gráfica para monitorar e gerenciar os tópicos e mensagens do Kafka, enquanto os logs do Producer e Consumer permitem verificar se as mensagens estão sendo produzidas e consumidas corretamente.
