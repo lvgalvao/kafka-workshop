@@ -19,9 +19,8 @@ O projeto se foca no monitoramento de transações financeiras em tempo real usa
 
 ```mermaid
 graph LR
-    subgraph Producer
-        Producer["Producer"]
-    end
+    Producer["Producer"]
+    Consumer["Consumer"]
 
     subgraph Kafka Cluster
         direction TB
@@ -29,10 +28,6 @@ graph LR
         Broker1["Broker 1"]
         Broker2["Broker 2"]
         Broker3["Broker 3"]
-    end
-
-    subgraph Consumer
-        Consumer["Consumer"]
     end
 
     Producer --> |"Send Messages"| Broker1
