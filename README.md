@@ -11,6 +11,23 @@ Bem-vindo ao projeto de monitoramento de transações financeiras em tempo real 
 * **Duração:** 4 horas
 * **Público:** Exclusivo para alunos da Jornada de Dados
 
+### Overview Kafka
+
+Kafka-demo
+
+Kafka-Topics-Partitions
+
+Kafka-Brokers-Replications
+
+Kafka-partitions
+
+Kafka-producers
+
+Kafka-connect
+
+Schema-Registry
+
+
 ### Descrição do Workshop
 
 O projeto se foca no monitoramento de transações financeiras em tempo real usando Apache Kafka. Neste cenário, o Producer gera transações simuladas utilizando a biblioteca Faker e as envia para um tópico Kafka. O Consumer então consome essas mensagens para análise ou processamento adicional.

@@ -54,5 +54,5 @@ while True:
     else:
         st.write('A tabela "temperature_data" ainda não existe ou não foi possível carregar os dados.')
     
-    time.sleep(5)
-    st.rerun
+    time.sleep(10)
+    st.experimental_rerun

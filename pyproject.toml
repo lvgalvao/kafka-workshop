@@ -9,6 +9,8 @@ readme = "README.md"
 python = "3.12.1"
 kafka-python = "^2.0.2"
 six = "^1.16.0"
+confluent-kafka = "^2.5.0"
+python-dotenv = "^1.0.1"
 
 
 [tool.poetry.group.dev.dependencies]
